@@ -1,15 +1,10 @@
-# Generates a json with site's properties:
-# 
-# Format: json
-# Date: background_color - Andu
-#       logouri text - Andu
-#       logouri iconite
-#       fonturi
-# Carol Luca Gaysan -- Ghid turistic
+### Copyright Horia Mercan 
+
 
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
+from lxml import etree
 import re
 import os
 import multiprocessing as mp
@@ -56,7 +51,7 @@ def get_themes_params(theme, css_file):
 #             DFS(element)
 
 def findRegExInText():
-    pass
+    None
 
 def getClasses(elements, css_files):
     
@@ -69,7 +64,8 @@ def getClasses(elements, css_files):
 
     dictionary = {}
     interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
-                , "outline-style", "background-color", "onclick"]
+                , "outline-style", "background-color", "onclick", "margin-bottom", "border-radius"
+                , "padding", "margin"]
     for element in elements:
         attributes = element.attrs
         for atr in attributes:
@@ -108,7 +104,7 @@ def value_getter(item):
     return item[1]
 def get_params_from_file(text):
     cmd = 'cat response.txt | grep -E -o "' + text +':[A-Z#()a-z0-9]*(}|;)" > ' + text + ".txt"
-    print(cmd)
+    # print(cmd)
     os.system(cmd)
     # time.sleep(0.1)
     file = open(text + ".txt", "r")
@@ -161,7 +157,7 @@ def get_heuristics(url):
 
     file = open("Heuristics.txt", "w")
     interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
-                , "outline-style", "background-color", "onclick", "padding"]
+                , "outline-style", "background-color", "onclick", "padding", "border-radius"]
     
     # for one in interes:
     #     print(one)
@@ -178,7 +174,7 @@ def get_heuristics(url):
         None
     
 if __name__ == "__main__":
-    get_heuristics("https://pbinfo.ro")
+    
+    get_heuristics("http://www.compjour.org/warmups/govt-text-releases/intro-to-bs4-lxml-parsing-wh-press-briefings/")
     # print(get_params_from_file("text-align"))
     
-
