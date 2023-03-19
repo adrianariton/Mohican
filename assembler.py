@@ -8,17 +8,15 @@ from colorthief import ColorThief
 from collections import Counter
 import math
 from simplicity import parse_features
-url1 = "https://eestec.ro/"
-url2 = "http://pbinfo.ro"
-url3 = "https://www.sitepoint.com/python-multiprocessing-parallel-programming/"
-url4 = 'https://lsacbucuresti.ro/'
-url5 = "https://www.innovationlabs.ro/"
-url6 = "https://duckduckgo.com/"
-url7 = "https://sneakerindustry.ro/ro/"
-url8 = "https://www.celticfc.com/"
-url9 = "https://github.com/"
-url10 = "https://ziare.com/"
-SITE_URL =  url10
+
+url1 = "http://pbinfo.ro"
+url2 = 'https://lsacbucuresti.ro/'
+url3 = "https://www.innovationlabs.ro/"
+url4 = "https://www.celticfc.com/"
+url5 = "https://www.yahoo.com/?guccounter=1"
+url6 = "https://regex101.com/"
+
+SITE_URL =  url3
 
 EMPTY_STYLE = {}
 FREEDOM = "__freedom__"

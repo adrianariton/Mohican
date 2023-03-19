@@ -181,7 +181,8 @@ def get_heuristics(url):
     file = open("Heuristics.txt", "a")
     interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
                 , "outline-style", "background-color", "onclick", "padding", "border-radius",
-                "color", "text-color"]
+                "color", "text-color"
+                "font-weight"]
     
     # for one in interes:
     #     print(one)

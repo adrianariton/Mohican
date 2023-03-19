@@ -1,5 +1,6 @@
 from color_sorting import get_colorcoeff
 from scraper import get_heuristics
+from colorfulness import get_category
 PARSED_DATA=["background-color",
     "color",
     "secondary-color",
@@ -13,7 +14,8 @@ PARSED_DATA=["background-color",
     "float",
     "border-radius",
     "margin-top",
-    "border-top"]
+    "border-top",
+    "font-weight"]
 
 DEFAULTS = [
     'white',
@@ -96,14 +98,20 @@ def parse_features(url):
             else:
                 ret[data] = k[0]
     
-    
+    category = get_category(url)
+    #category = []
+
     for c in color:
         for g in bgcolor:
             if c!=g and c not in TRANSPARENT and g not in TRANSPARENT:
                 ret['color'] = c
                 ret['background-color'] = g
                 print(c, g)
-                return {'site':ret, 'card':card_col, 'flags': flags3}
+                if "simplistic" not in category:
+                    return {'site':ret, 'card':card_col, 'flags': flags3}
+                if category == "simplistic_none":
+                    return {'site':ret, 'card':card_col, 'flags': flags2}
+                return {'site':ret, 'card':card_col, 'flags': flags1}
 
     return {'site':ret, 'card':card_col, 'flags': flags3}
 
