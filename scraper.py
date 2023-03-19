@@ -4,11 +4,11 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
-from lxml import etree
 import re
 import os
 import multiprocessing as mp
-import time
+from PIL import Image
+
 class Heuristics:
     def __init__(self, margins, border, height, width, outline, font):
         self.margins = margins
@@ -24,8 +24,8 @@ def get_extension(url):
 def get_themes_params(theme, css_file):
     text = "." + theme + '.*\{.*\}'
     result = re.search(text, css_file)
-    print (text)
-    print(result)
+    # print (text)
+    # print(result)
     # print("___________________________")
     if result != None:
         alpha = str(result)
@@ -35,7 +35,7 @@ def get_themes_params(theme, css_file):
         except Exception as e:
             return ""
         
-        print(alpha)
+        # print(alpha)
         return alpha
     return ""
 
@@ -54,18 +54,24 @@ def findRegExInText():
     None
 
 def getClasses(elements, css_files):
-    
-    
+    # print(elements)
+    if elements == None:
+        print("eu", file = open("response.txt", "w"))
+        return None
+        
     css_dictionary = {}
     for css in css_files:
             r = requests.get(css, allow_redirects = True)
+            # open("response.txt", "a")
+            # os.system("rm response.txt")
+            
             print(str(r.content).replace("\\n", " "), file = open("response.txt", "a"))    # print(soup)
 
 
     dictionary = {}
-    interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
-                , "outline-style", "background-color", "onclick", "margin-bottom", "border-radius"
-                , "padding", "margin"]
+    # interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
+    #             , "outline-style", "background-color", "onclick", "margin-bottom", "border-radius"
+    #             , "padding", "margin", "color"]
     for element in elements:
         attributes = element.attrs
         for atr in attributes:
@@ -87,7 +93,7 @@ def getClasses(elements, css_files):
                     else:
                         dictionary[name].append(value)
 
-    return dictionary["class"]
+    return dictionary["class"] if "class" in dictionary else None
 
 def getFrequency(class_array):
     frequency = {}
@@ -102,9 +108,9 @@ def getFrequency(class_array):
 
 def value_getter(item):
     return item[1]
-def get_params_from_file(text):
+def get_params_from_file(text, dict_final):
     cmd = 'cat response.txt | grep -E -o "' + text +':[A-Z#()a-z0-9]*(}|;)" > ' + text + ".txt"
-    # print(cmd)
+    print(cmd)
     os.system(cmd)
     # time.sleep(0.1)
     file = open(text + ".txt", "r")
@@ -122,59 +128,117 @@ def get_params_from_file(text):
             dictionary[tupleLine[1]] = 1
 
     # max_key = max(dictionary, key = dictionary.get)
-    return sorted(dictionary.items(), key=value_getter, reverse = True)
+    new_dict = dict(sorted(dictionary.items(), key=value_getter, reverse = True))
+    # print (text, end = " : ");print(new_dict)
+    dict_final.append(
+        {"attribute" : text,
+         "objects" : new_dict}
+    )
 
-def writeInFile(text, file):
+    cmdRm = "rm " + text + ".txt"
+    # os.system(cmdRm)
+    return new_dict
+
+def writeInFile(text, file, dict_final):
     print(text, end = " = ", file = file)
-    print(get_params_from_file(text), file = file)
+    print(get_params_from_file(text = text, dict_final= dict_final), file = file)
     
 def get_heuristics(url):
+    fileToClose = open("response.txt", "w")
+    print("\n", file = fileToClose)
+    fileToClose.flush()
+    fileToClose.close()
     session = requests.Session()
     session.headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
     html = session.get(url).content
 
     soup = bs(html, "html.parser")
-
+    print(html, file = open("html.txt", "w"))
     # get the CSS files
     css_files = []
-
+    img_files = []
     for css in soup.find_all("link"):
         if css.attrs.get("href"):
             # if the link tag has the 'href' attribute
             css_url = urljoin(url, css.attrs.get("href"))
             if get_extension(css_url) == "css":
                 # print(get_extension(css_url))
-                css_files.append(css_url) 
+                css_files.append(css_url)
+            elif get_extension(css_url) in ["png", "jpeg", "ico", "jpeg"]:
+                img_files.append(css_url)
 
-    # print(css_files)
+    print("css_files", end = " : "); print(css_files)
+    print("img_files", end = " : "); print(img_files)
     elements = soup.find_all()
-
-    class_array = list(getClasses(elements, css_files))
-    
+    aux = getClasses(elements, css_files)
+    # aux_html = getCla
+    class_array = (list(getClasses(elements, css_files)) if not aux == None else [])
+    # print(css_files)
     # print(class_array)
     # print("--------------------------")
-    # print(getFrequency(class_array))
+    print(getFrequency(class_array))
 
-    file = open("Heuristics.txt", "w")
+    file = open("Heuristics.txt", "a")
     interes = ["width", "height", "bgcolor", "border", "text-color", "font-family", "text-align"
-                , "outline-style", "background-color", "onclick", "padding", "border-radius"]
+                , "outline-style", "background-color", "onclick", "padding", "border-radius",
+                "color", "text-color"]
     
     # for one in interes:
     #     print(one)
         # file = open(one + ".txt", "r")
     print (mp.cpu_count())
+    dict_final = mp.Manager().list()
     processes = []
     for one in interes:
-        p = mp.Process(target = writeInFile, args =(one, file))
-        processes.append(p)
+        p = mp.Process(target = writeInFile, args =(one, file, dict_final))
         p.start()
-        writeInFile(one, file)
+        processes.append(p)
+        
+        # writeInFile(one, file, dict_final)
     for p in processes:
         p.join()
+        
         None
-    
+    # args = []
+    # for elem in interes:
+    #     args.append(tuple([elem, file, dict_final]))
+    # with mp.Pool() as pool:
+    #     map_result = pool.starmap_async(writeInFile, args)
+    #     result = map_result.get(timeout = 0.3)
+    items = {}
+    for key in dict_final : 
+        items[key["attribute"]] = key["objects"]
+    # print(items)
+
+    interes.append("Heuristics")
+    for one in interes:
+        print("\n", file = open(one + ".txt" , "w"))
+
+
+    return items
+
+''' 
 if __name__ == "__main__":
-    
-    get_heuristics("http://www.compjour.org/warmups/govt-text-releases/intro-to-bs4-lxml-parsing-wh-press-briefings/")
-    # print(get_params_from_file("text-align"))
-    
+    url1 = "http://www.compjour.org/warmups/govt-text-releases/intro-to-bs4-lxml-parsing-wh-press-briefings/"
+    url2 = "https://pbinfo.ro"
+    url3 = "https://www.geeksforgeeks.org/python-split-dictionary-keys-and-values-into-separate-lists/"
+    url4 = "https://github.com/"
+    url5 = "https://www.innovationlabs.ro/"
+    url6 = "https://eestec.ro"
+    url7 = "https://www.hrs-bg.com/"
+    url8 = "https://www.vodafone.ro/"
+    print(get_heuristics(url8))
+
+'''
+if __name__ == "__main__":
+
+    url1 = "http://www.compjour.org/warmups/govt-text-releases/intro-to-bs4-lxml-parsing-wh-press-briefings/"
+    url2 = "https://pbinfo.ro"
+    url3 = "https://www.geeksforgeeks.org/python-split-dictionary-keys-and-values-into-separate-lists/"
+    url4 = "https://github.com/"
+    url5 = "https://www.innovationlabs.ro/"
+    url6 = "https://eestec.ro"
+    url7 = "https://www.hrs-bg.com/"
+    url8 = "https://www.vodafone.ro/"
+    url9 = "https://pizzahut.ro"
+    print(get_heuristics(url9))

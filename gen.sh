@@ -20,7 +20,7 @@ echo '        display: flex;' >> adver.html
 echo '        flex-direction: column;' >> adver.html
 echo '        align-content: center;' >> adver.html
 echo '        justify-content: center;' >> adver.html
-echo '        background: url("static/bcg.jpg");' >> adver.html
+echo '        background: white;' >> adver.html
 echo '    }' >> adver.html
 echo '</style>' >> adver.html
 echo '</html>"' >> adver.html
