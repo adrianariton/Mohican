@@ -7,6 +7,16 @@ from PIL import Image
 from colorthief import ColorThief
 from collections import Counter
 import math
+from simplicity import parse_features
+
+url1 = "http://pbinfo.ro"
+url2 = 'https://lsacbucuresti.ro/'
+url3 = "https://www.innovationlabs.ro/"
+url4 = "https://www.celticfc.com/"
+url5 = "https://www.yahoo.com/?guccounter=1"
+url6 = "https://regex101.com/"
+
+SITE_URL =  url3
 
 EMPTY_STYLE = {}
 FREEDOM = "__freedom__"
@@ -100,9 +110,12 @@ class Advertisment:
         self.rigidity = rigidity
         self.html = html
     
-    def assemble(self, json=None):
+    def assemble(self, json=None, features=None):
+        if json == None:
+            site_features = features
+        else:
+            site_features = JSON.loads(json)
         keys = list(self.parts.keys())
-        site_features = JSON.loads(json)
         
         card_features = site_features['card']
         flags = site_features['flags']
@@ -147,7 +160,7 @@ class Advertisment:
         
         for elem in taglist:
             if elem.parent == None or elem.parent == elem or str(elem.parent).strip() == str(elem).strip():
-                print(f"parent: {elem}")
+                # print(f"parent: {elem}")
                 for key_, value_ in card_features.items():
                     if elem.has_attr('style'):
                         elem['style'] = elem['style'] + f'; {key_}: {value_} !important;'
@@ -213,13 +226,14 @@ class Advertisment:
         
         return final
             
-                
+
+
 
 
 parts = {
     "head": Text(content="Mohican", style=EMPTY_STYLE, type='h1'),
     "img" : Image(content="static/mohican.png", style={"width": "auto", "height": "70px", "padding": "10px"}, type='logo'),
-    "motto": Text("flawless adds .", style={"font-family": "cursive"}, type='h2'),
+    "motto": Text("flawless ads .", style={"font-family": "cursive"}, type='h2'),
     "bcg" : Raw(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg'),
     "bcgimg" : Image(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg')
 }
@@ -236,36 +250,14 @@ with open('adver.html', 'r') as file :
 
 
 features = open('attr.json', 'r').read()
-
+ft = parse_features(SITE_URL)
+print(ft)
 # Replace the target string
-filedata = filedata.replace('@@', ad.assemble(features))
+filedata = filedata.replace('@@', ad.assemble(features=ft))
 
 # Write the file out again
 with open('adver.html', 'w') as file:
   file.write(filedata)
 
 
-
-    
-    
-    
-'''
-def main():
-    url = "https://pbinfo.ro"
-
-    session = requests.Session()
-    session.headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-    html = session.get(url).content
-    
-    soup = bs(html, "html.parser")
-
-    mydivs = soup.findAll('ins', {"class" : "adsbygoogle"})
-
-
-    print(mydivs, file = open("response.txt", "w"))
-
-
-if __name__ == "__main__":
-    main()
-'''
 
