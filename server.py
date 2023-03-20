@@ -6,7 +6,13 @@ app = Flask(__name__)
 
 @app.route("/") # ‘https://www.google.com/‘
 def home():
-    return "Hello, world!"
+    return """
+        <body>
+        <h1>Mohican!</h1>
+        <a href='adver'>Click to see generated add!</a>
+        <h3>Run "./gen.sh" if you see no add generated!</h3>
+        </body>
+"""
 
 @app.route("/adi")
 def adi():
