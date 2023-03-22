@@ -127,7 +127,7 @@ class Advertisment:
         final = self.html
         
         for key in keys:
-            val = parts[key]
+            val = self.parts[key]
 
             keystr = f'$${key}$$'
             
@@ -227,37 +227,38 @@ class Advertisment:
         return final
             
 
+from test_scraper import dump
+
+def run_mohican():
+    parts = {
+        "head": Text(content="Mohican", style=EMPTY_STYLE, type='h1'),
+        "img" : Image(content="static/mohican.png", style={"width": "auto", "height": "70px", "padding": "10px"}, type='logo'),
+        "motto": Text("flawless ads .", style={"font-family": "cursive"}, type='h2'),
+        "bcg" : Raw(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg'),
+        "bcgimg" : Image(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg')
+    }
+
+    ad_file = 'adslide1.html'
+
+    ad = Advertisment(title='Randomadd', parts=parts, rigidity=0, html=open(f'{ad_file}', 'r').read())
+
+    
+    # Alter HTML file to see the changes done
+    # Read in the file
+    with open('adver.html', 'r') as file :
+        filedata = file.read()
+
+    dump()
+    features = open('attr.json', 'r').read()
+    # ft = parse_features(SITE_URL)
+    # print(ft)
+    # Replace the target string
+    # testing
+    filedata = filedata.replace('@@', ad.assemble(json=features))
+
+    # Write the file out again
+    with open('adver.html', 'w') as file:
+        file.write(filedata)
 
 
-
-parts = {
-    "head": Text(content="Mohican", style=EMPTY_STYLE, type='h1'),
-    "img" : Image(content="static/mohican.png", style={"width": "auto", "height": "70px", "padding": "10px"}, type='logo'),
-    "motto": Text("flawless ads .", style={"font-family": "cursive"}, type='h2'),
-    "bcg" : Raw(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg'),
-    "bcgimg" : Image(content='https://forum.zorin.com/uploads/default/original/2X/7/7fee1cd44a7b3f949550bd4d57a10a3946468a60.jpeg')
-}
-
-ad_file = 'adslide1.html'
-
-ad = Advertisment(title='Randomadd', parts=parts, rigidity=0, html=open(f'{ad_file}', 'r').read())
-
- 
-# Alter HTML file to see the changes done
-# Read in the file
-with open('adver.html', 'r') as file :
-    filedata = file.read()
-
-
-features = open('attr.json', 'r').read()
-ft = parse_features(SITE_URL)
-print(ft)
-# Replace the target string
-filedata = filedata.replace('@@', ad.assemble(features=ft))
-
-# Write the file out again
-with open('adver.html', 'w') as file:
-  file.write(filedata)
-
-
-
+run_mohican()

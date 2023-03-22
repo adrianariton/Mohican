@@ -112,5 +112,8 @@ slide1 = {"site": attr_SLIDE1, "card": card_col, "flags": flags1}
 slide2 = {"site": attr_SLIDE2, "card": card_col, "flags": flags2}
 reddit = {"site": attr_REDDIT, "card": card_col, "flags": flags3}
 apple_dark = {"site": attr_APPLE_DARK, "card": card_col, "flags": flags2}
-y = json.dumps(reddit)
-print(y , file=open('attr.json', 'w'))
+def dump():
+    y = json.dumps(apple_dark)
+    print(y , file=open('attr.json', 'w'))
+    
+dump()
