@@ -65,7 +65,7 @@ flags1 = ["simplistic", "big_logo"]
 flags2 = ["simplistic"]
 flags3 = ["s"]
 
-def parse_features(url):
+def parse_features(url, ss):
     ft = get_heuristics(url)
     # print(ft)
     ret = {}
@@ -97,9 +97,9 @@ def parse_features(url):
             
             else:
                 ret[data] = k[0]
-    
-    category = get_category(url)
-    #category = []
+    category = []
+    if ss == 'on' or ss == True:
+        category = get_category(url)
 
     for c in color:
         for g in bgcolor:

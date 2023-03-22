@@ -229,7 +229,7 @@ class Advertisment:
 
 from test_scraper import dump
 
-def run_mohican():
+def run_mohican(data, ss):
     parts = {
         "head": Text(content="Mohican", style=EMPTY_STYLE, type='h1'),
         "img" : Image(content="static/mohican.png", style={"width": "auto", "height": "70px", "padding": "10px"}, type='logo'),
@@ -248,17 +248,20 @@ def run_mohican():
     with open('adver.html', 'r') as file :
         filedata = file.read()
 
-    dump()
     features = open('attr.json', 'r').read()
-    # ft = parse_features(SITE_URL)
-    # print(ft)
+    
+    ft = parse_features(data, ss)
+    print(ft)
+    filedata = filedata.replace('@@', ad.assemble(features=ft))
+    # ^^ Uncomment theese to have input url
+    
     # Replace the target string
     # testing
-    filedata = filedata.replace('@@', ad.assemble(json=features))
+    # filedata = filedata.replace('@@', ad.assemble(features=data))
 
     # Write the file out again
     with open('adver.html', 'w') as file:
         file.write(filedata)
 
-
-run_mohican()
+if __name__ == '__main__':
+    run_mohican(SITE_URL, True)

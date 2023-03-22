@@ -8,7 +8,7 @@ import re
 import os
 import multiprocessing as mp
 from PIL import Image
-
+import sys
 class Heuristics:
     def __init__(self, margins, border, height, width, outline, font):
         self.margins = margins
@@ -144,6 +144,12 @@ def writeInFile(text, file, dict_final):
     print(get_params_from_file(text = text, dict_final= dict_final), file = file)
     
 def get_heuristics(url):
+    
+    if sys.platform == 'darwin':
+        try:
+            mp.set_start_method('fork')
+        except RuntimeError:
+            pass
     fileToClose = open("response.txt", "w")
     print("\n", file = fileToClose)
     fileToClose.flush()
@@ -192,6 +198,7 @@ def get_heuristics(url):
     processes = []
     for one in interes:
         p = mp.Process(target = writeInFile, args =(one, file, dict_final))
+
         p.start()
         processes.append(p)
         

@@ -7,20 +7,14 @@ app = Flask(__name__)
 
 @app.route("/") # ‘https://www.google.com/‘
 def home():
-    return """
-        <body>
-        <h1>Mohican!</h1>
-        <a href='adver'>Click to see generated add!</a>
-        <h3>Run "./gen.sh" if you see no add generated!</h3>
-        </body>
-"""
-
-@app.route("/adi")
-def adi():
-    return "<body bgcolor='red'><h1>Adi!</h1></body>"
+    return open('index.html')
 
 @app.route("/adver")
 def adver():
+    
+    url = request.args.get('data')
+    
+    ss = request.args.get('ss')
     with open("adver.html", 'w') as f:
         f.write("""
                 <!DOCTYPE html>
@@ -51,7 +45,7 @@ def adver():
 </html>"
 
                 """)
-    run_mohican()
+    run_mohican(url, ss)
     
     return open('adver.html')
 

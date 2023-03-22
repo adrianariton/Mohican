@@ -112,8 +112,10 @@ slide1 = {"site": attr_SLIDE1, "card": card_col, "flags": flags1}
 slide2 = {"site": attr_SLIDE2, "card": card_col, "flags": flags2}
 reddit = {"site": attr_REDDIT, "card": card_col, "flags": flags3}
 apple_dark = {"site": attr_APPLE_DARK, "card": card_col, "flags": flags2}
-def dump():
-    y = json.dumps(apple_dark)
+def dump(data):
+    # change this and reload server
+    # next: TODO: requests from fontend
+    y = json.dumps(data)
     print(y , file=open('attr.json', 'w'))
-    
-dump()
+if __name__ == '__main__':
+    dump(apple_dark)
