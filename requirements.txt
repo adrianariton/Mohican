@@ -123,7 +123,6 @@ trio-websocket==0.10.1
 typing_extensions==4.4.0
 tzdata==2023.2
 tzlocal==4.3
-ufw==0.36.1
 urllib3==1.26.1
 validators==0.20.0
 watchdog==3.0.0
