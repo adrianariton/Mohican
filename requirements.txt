@@ -77,7 +77,6 @@ pyasn1-modules==0.2.8
 pycodestyle==2.10.0
 pydeck==0.8.0
 Pygments==2.13.0
-PyGObject==3.42.1
 pylint==2.15.10
 Pympler==1.0.1
 pyquery==2.0.0
