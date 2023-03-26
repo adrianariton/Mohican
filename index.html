@@ -1,16 +1,55 @@
 
-<body>
+<body class="c">
     <h1>Mohican: add generation</h1>
+    <p>Mohican is a tool that is part of a start-up created by Adrian Ariton, Carol Luca Gasan, Alexandru Ariton and Horia Mercan</p>
+
+    <a href="https://carolluca-mohican-streamlit-app-2tpv69.streamlit.app/">Current dev [online]</a>
+    <p>https://carolluca-mohican-streamlit-app-2tpv69.streamlit.app/</p>
     
-    
-    <form action="/adver">
-        <label for="data">SITE URL:</label><br>
-        <input type="text" id="data" name="data" value="https://pbinfo.ro"><br>
-        <label for="ss">Screenshot? [slower but more freedom degrees]</label><br>
-        <input type="checkbox" checked id="ss" name="ss"><br>
-        <input type="submit" value="Submit">
-    </form>
-    <br>
-    <br>
+    <h4>Or, try it here! (for testing and bug report)</h4>
+    <h2>Add generator V1 [non-local]</h2>
+    <div class="edge">
+        <form action="/adver">
+            <label for="data">SITE URL:</label><br>
+            <input type="text" id="data" name="data" value="https://pbinfo.ro"><br>
+            <label for="ss">Screenshot? [slower but more freedom degrees]</label><br>
+            <input type="checkbox" checked id="ss" name="ss"><br>
+            <input class="submit" type="submit" value="Submit">
+        </form>
+
+    </div>
     <h5>Old add generator to be used for testing: run './gen.sh'</h5>
+
+    
+    <br>
+    <br>
+    <h1>Local Scraper V1</h1>
+    <a href="/scrapertest">Test our local scraper script.</a>
+    <h3>View console [inspect element] for output.</h3>
+    <p> Modify test_website_page.html (thanks to w3schools) and use the script to extract color scheme locally.</p>
+    <p> This will be updated to post to an API, that will return the add.</p>
+    <h1> [in progress] Using Mohican in your site:</h1>
+    <ul>
+        !!!!!!
+        <li>add https://{link-to-be-determined}/static/mohi.js as script (the script will be soon improved and finished) </li>
+    </ul>
+
+    <p>The script will be a much faster option as opposed to the parametrized link function as it has no requests to do. 
+        We will still keep the webscraping api and improve it.
+    </p>
+    
+
 </body>
+<style>
+    .edge{
+        border: 2px solid black;
+        width: min-content;
+        padding: 20px;
+    }
+
+    .c{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>

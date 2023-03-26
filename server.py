@@ -9,6 +9,10 @@ app = Flask(__name__)
 def home():
     return open('index.html')
 
+@app.route("/scrapertest")
+def scrapertest():
+    return open("test_website_page.html")
+
 @app.route("/adver")
 def adver():
     
