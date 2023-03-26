@@ -16,5 +16,5 @@ Server will be open on port `5000`. The main page will guide you through the pro
 - Fix mp for MacOs [done 22 mar - Adi]. Also improved the workflow slightly
 - Faster scraper (you can see that the request takes a while) [partialy done by changing the focus to inplace scripts (see server for reading)]
 - Attributes to matter ofrallchildren, not just immediate
-- Mohican emaol address and github acc + migrate
+- Mohican email address and github acc + migrate
 
