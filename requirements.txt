@@ -45,7 +45,7 @@ itsdangerous==2.1.2
 Jinja2==3.1.2
 joblib==1.2.0
 jsonschema==4.17.3
-keras==2.10.0
+keras==2.11.0
 lazy-object-proxy==1.9.0
 libclang==15.0.6.1
 LinkChecker @ git+https://github.com/linkchecker/linkchecker.git@3041c8af2836bb3b3388ab8ad28f0d32bfbbbc26
