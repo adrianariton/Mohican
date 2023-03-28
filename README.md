@@ -1,9 +1,8 @@
 ### Mohican
 # Innovation Labs 2023 - Finalist Start-up
 
-## Curent App
+## Current App
 - https://carolluca-mohican-streamlit-app-2tpv69.streamlit.app/
-
 
 ## Run locally
 Start server:
@@ -11,6 +10,9 @@ Start server:
 ./scr.sh
 ```
 Server will be open on port `5000`. The main page will guide you through the process.
+
+## Dataset
+- https://github.com/CarolLuca/mohican_dataset
 
 ## TODOS:
 - Fix mp for MacOs [done 22 mar ]. Also improved the workflow slightly
